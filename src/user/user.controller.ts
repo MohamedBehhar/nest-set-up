@@ -1,0 +1,43 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { UserService } from './user.service';
+import { CreateUserDto, FindOneParams, UpdateUserDto } from './entities';
+
+@Controller('user')
+export class UserController {
+  constructor(private readonly userService: UserService) {}
+
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.userService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param() { id }: FindOneParams) {
+    console.log(typeof id);
+
+    return this.userService.findOne(id);
+  }
+
+  @Patch(':id')
+  update({ id }: FindOneParams, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(+id, updateUserDto);
+  }
+
+  @Delete(':id')
+  remove({ id }: FindOneParams) {
+    return this.userService.remove(+id);
+  }
+}
